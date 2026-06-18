@@ -51,3 +51,5 @@ lexai/
 ├── .gitignore
 └── README.md
 ```
+## Demo
+https://lexai-rag-based-legal-document-qanda.onrender.com
