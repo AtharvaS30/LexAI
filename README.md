@@ -52,4 +52,4 @@ lexai/
 └── README.md
 ```
 ## Demo
-https://lexai-rag-based-legal-document-qanda.onrender.com
+https://lexai-rag-based-legal-document-qanda.onrender.com/
