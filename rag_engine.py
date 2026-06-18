@@ -20,7 +20,7 @@ def extract_text_from_pdf(pdf_path: str) -> str:
         return ""
 
 
-def chunk_text(text: str, chunk_size: int = 800, overlap: int = 100) -> list[str]:
+def chunk_text(text: str, chunk_size: int = 1500, overlap: int = 150) -> list[str]:
     chunks = []
     start = 0
     while start < len(text):
@@ -38,14 +38,18 @@ def get_gemini_embeddings(texts: list[str]) -> list[list[float]]:
 
     client = genai.Client(api_key=GEMINI_API_KEY)
     embeddings = []
-    for text in texts:
-        result = client.models.embed_content(
-            model="models/gemini-embedding-001",
-            contents=types.Content(
-                parts=[types.Part(text=text)]
+    batch_size = 10
+    for i in range(0, len(texts), batch_size):
+        batch = texts[i:i+batch_size]
+        for text in batch:
+            result = client.models.embed_content(
+                model="models/gemini-embedding-001",
+                contents=types.Content(
+                    parts=[types.Part(text=text)]
+                )
             )
-        )
-        embeddings.append(result.embeddings[0].values)
+            embeddings.append(result.embeddings[0].values)
+        print(f"Embedded {min(i+batch_size, len(texts))}/{len(texts)} chunks")
     return embeddings
 
 
